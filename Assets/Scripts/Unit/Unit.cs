@@ -13,13 +13,21 @@ public abstract class Unit : MonoBehaviour
     public int Side;
     public bool IsFlying;
     public bool IsWaitingForTurn = true;
-    private float _movementDuration =0.2f;
-    
+    private float _movementDuration = 0.2f;
+
     private Queue<Vector3> _pathPositions = new Queue<Vector3>();
 
     public Action MovementFinished;
+    public Action<Unit> UnitDied;
 
     public void MoveThroughPath(List<Vector3> currentPath)
+    {
+        _pathPositions = new Queue<Vector3>(currentPath);
+        Vector3 firstTarget = _pathPositions.Dequeue();
+        StartCoroutine(MovementCoroutine(firstTarget));
+    }
+
+    public void Attack(List<Vector3> currentPath)
     {
         _pathPositions = new Queue<Vector3>(currentPath);
         Vector3 firstTarget = _pathPositions.Dequeue();
@@ -51,5 +59,21 @@ public abstract class Unit : MonoBehaviour
         {
             MovementFinished?.Invoke();
         }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        HealthPoint -= damage;
+
+        if (HealthPoint <= 0)
+        {
+            HealthPoint = 0;
+            UnitDied?.Invoke(this);
+        }
+    }
+
+    public void ApplyDamage(Unit unit)
+    {
+        unit.TakeDamage(Damage);
     }
 }

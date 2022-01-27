@@ -11,7 +11,7 @@ public class GraphSearch
         Dictionary<Vector3Int, Vector3Int?> visitedHex = new Dictionary<Vector3Int, Vector3Int?>();
         Dictionary<Vector3Int, int> costHistory = new Dictionary<Vector3Int, int>();
         Queue<Vector3Int> hexToVisit = new Queue<Vector3Int>();
-
+        
         hexToVisit.Enqueue(startPoint);
         costHistory.Add(startPoint, 0);
         visitedHex.Add(startPoint, null);

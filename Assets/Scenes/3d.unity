@@ -6327,6 +6327,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Snowmen
       objectReference: {fileID: 0}
+    - target: {fileID: 1125181244151460, guid: 31934a5d29c16bc4cab25792d04131a9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4998067400206942, guid: 31934a5d29c16bc4cab25792d04131a9, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -9153,7 +9157,7 @@ MonoBehaviour:
   Damage: 0
   Initiative: 8
   UnitAmount: 0
-  Side: 0
+  Side: 1
   IsFlying: 0
   IsWaitingForTurn: 1
 --- !u!1001 &1434571325
@@ -11500,7 +11504,7 @@ MonoBehaviour:
   Damage: 10
   Initiative: 6
   UnitAmount: 1
-  Side: 1
+  Side: 0
   IsFlying: 0
   IsWaitingForTurn: 1
 --- !u!1001 &1815879807

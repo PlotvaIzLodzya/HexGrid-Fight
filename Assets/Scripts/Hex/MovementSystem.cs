@@ -17,8 +17,6 @@ public class MovementSystem : MonoBehaviour
         {
             _hexGrid.GetHexAt(hexPosition).SetDeactive();
         }
-
-        _range = new BFSResult();
     }
 
     public void ShowRange(Unit selectedUnit)
@@ -52,6 +50,12 @@ public class MovementSystem : MonoBehaviour
     public void MoveUnit(Unit selectedUnit)
     {
         selectedUnit.MoveThroughPath(currentPath.Select(pos=> _hexGrid.GetHexAt(pos).transform.position).ToList());
+        HideRange();
+    }
+
+    public void AttackUnit(Unit selectedUnit)
+    {
+        selectedUnit.Attack(currentPath.Select(pos => _hexGrid.GetHexAt(pos).transform.position).ToList());
         HideRange();
     }
 

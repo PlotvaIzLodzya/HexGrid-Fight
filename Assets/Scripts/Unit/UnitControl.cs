@@ -22,7 +22,6 @@ public class UnitControl : MonoBehaviour
     private void OnDisable()
     {
         _pointer.HexSelected -= HandleSelectedHex;
-        _currentUnit.MovementFinished -= OnMoveFinished;
     }
 
     public void SetCurrentUnit(Unit currenUnit)
@@ -37,11 +36,15 @@ public class UnitControl : MonoBehaviour
         _movementSystem.MoveUnit(_currentUnit);
     }
 
+    private void HandleUnitSelected(Unit unit)
+    {
+
+    }
+
     private void OnMoveFinished()
     {
-        _movementSystem.HideRange();
-        _movementSystem.ShowRange(_currentUnit);
         _movementSystem.ClearPath();
+        _currentUnit.MovementFinished -= OnMoveFinished;
         MoveFinished?.Invoke();
     }
 }

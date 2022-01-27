@@ -12,6 +12,10 @@ public class UnitQueue : MonoBehaviour
     private List<Unit> _units;
 
     public Action UnitsReseted;
+    public Action UnitAdded;
+    public Action UnitRemoved;
+    public Action<int> UnitsOnSideAreOver;
+    public Action AllUnitsAreOver;
 
     private void Awake()
     {
@@ -33,27 +37,33 @@ public class UnitQueue : MonoBehaviour
         NextUnit();
     }
 
-    public void Sort()
-    {
-        List<Unit> units = _units.OrderByDescending(unit => unit.Initiative).ToList();
-        _units = units;
-    }
-
     public void AddUnit(Unit unit)
     {
         _units.Add(unit);
         Sort();
+        UnitAdded?.Invoke();
     }
 
     public void RemoveUnit(Unit unit)
     {
         _units.Remove(unit);
+        UnitRemoved?.Invoke();
+        CheckIsAnyUnitsLeft(unit.Side);
     }
 
-    public void NextUnit()
+    private void CheckIsAnyUnitsLeft(int side)
+    {
+        List<Unit> sideUnits = _units.FindAll(unit => unit.Side == side);
+
+        if (_units.Count <= 0)
+            AllUnitsAreOver?.Invoke();
+        else if (sideUnits.Count <= 0)
+            UnitsOnSideAreOver?.Invoke(side);
+    }
+
+    private void NextUnit()
     {
         Unit unit = _units.FirstOrDefault(unit => unit.IsWaitingForTurn);
-
 
         if (unit != null)
         {
@@ -64,11 +74,9 @@ public class UnitQueue : MonoBehaviour
         {
             ResetUnitsTurns();
         }
-
-
     }
 
-    public void ResetUnitsTurns()
+    private void ResetUnitsTurns()
     {
         foreach (var unit in _units)
         {
@@ -77,5 +85,10 @@ public class UnitQueue : MonoBehaviour
 
         UnitsReseted?.Invoke();
         NextUnit();
+    }
+
+    private void Sort()
+    {
+        _units = _units.OrderByDescending(unit => unit.Initiative).ToList();
     }
 }

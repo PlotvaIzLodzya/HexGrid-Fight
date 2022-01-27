@@ -6,9 +6,9 @@ using System;
 public class Pointer : MonoBehaviour
 {
     private Ray _ray;
+    private Hex _lastHex;
     private Camera _camera;
     private PlayerInput _playerInput;
-    private List<Vector3Int> neighbours = new List<Vector3Int>();
 
     public Action<Hex> HexSelected;
     public Action<Unit> UnitSelected;
@@ -37,7 +37,13 @@ public class Pointer : MonoBehaviour
         if(Physics.Raycast(_ray, out RaycastHit _hitInfo))
         {
             if (_hitInfo.collider.TryGetComponent(out Hex hex) && hex.Reachable)
-                OnHexHover?.Invoke(hex.HexCoordinates);
+            {
+                if(_lastHex != hex)
+                {
+                    OnHexHover?.Invoke(hex.HexCoordinates);
+                    _lastHex = hex;
+                }
+            }
         }
     }
 
